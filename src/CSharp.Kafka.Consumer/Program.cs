@@ -1,5 +1,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using CSharp.Kafka.Business.Application.Services;
+using CSharp.Kafka.Business.Application.Interfaces;
 
 namespace CSharp.Kafka.Consumer
 {
@@ -12,6 +14,10 @@ namespace CSharp.Kafka.Consumer
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureServices(services =>
+                {
+                    services.AddTransient<INotificationService, NotificationService>();
+                })
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<Worker>();

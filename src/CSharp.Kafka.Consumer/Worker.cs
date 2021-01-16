@@ -1,19 +1,25 @@
 using System;
 using Confluent.Kafka;
+using Newtonsoft.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using CSharp.Kafka.Business.Domain.Messages;
+using CSharp.Kafka.Business.Application.Interfaces;
 
 namespace CSharp.Kafka.Consumer
 {
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
+        private readonly INotificationService _service;
 
-        public Worker(ILogger<Worker> logger)
+        public Worker(ILogger<Worker> logger,
+                      INotificationService service)
         {
             _logger = logger;
+            _service = service;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -27,30 +33,29 @@ namespace CSharp.Kafka.Consumer
 
             while (!stoppingToken.IsCancellationRequested)
             {
-
                 try
                 {
                     using (var consumer = new ConsumerBuilder<string, string>(config).Build())
                     {
+                        _logger.LogInformation("Start consumer message");
+
                         consumer.Subscribe("dbserver1.dbo.Customers");
                         var consume = consumer.Consume();
 
-                        _logger.LogInformation(consume.Message.Value);
+                        if (consume.Message?.Value == null) return;
 
-                        var message = consume.Message;
+                        _logger.LogInformation($"Send message to notification: {consume.Message.Value}");
+
+                        var message = JsonConvert.DeserializeObject<KafkaMessage>(consume.Message.Value);
+                        await _service.SendNotificationAsync(message);
                     }
-                        
-                    
-
-                 
-
 
                     _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
                     await Task.Delay(1000, stoppingToken);
                 }
                 catch (Exception exception)
                 {
-                    
+                    _logger.LogError($"{exception?.InnerException?.Message ?? exception?.Message}");
                 }
             }
         }
