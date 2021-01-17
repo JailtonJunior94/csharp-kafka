@@ -8,22 +8,22 @@ namespace CSharp.Kafka.Business.Domain.Entities
         {
             Name = name;
             Email = email;
-            CreatedAt = 0;
+            CreatedAt = DateTime.Now;
             Active = true;
         }
 
         public long Id { get; private set; }
         public string Name { get; private set; }
         public string Email { get; private set; }
-        public long CreatedAt { get; private set; }
-        public long? UpdateAt { get; private set; }
+        public DateTime CreatedAt { get; private set; }
+        public DateTime? UpdatedAt { get; private set; }
         public bool Active { get; private set; }
 
         public Customer Update(string name, string email, bool active)
         {
             Name = name;
             Email = email;
-            UpdateAt = 0;
+            UpdatedAt = DateTime.Now;
             Active = active;
 
             return this;

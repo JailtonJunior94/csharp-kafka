@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using CSharp.Kafka.Business.Domain.Entities;
 
 namespace CSharp.Kafka.Business.Domain.Messages
 {
@@ -35,8 +34,8 @@ namespace CSharp.Kafka.Business.Domain.Messages
 
     public class Payload
     {
-        public Customer Before { get; set; }
-        public Customer After { get; set; }
+        public CustomerMessage Before { get; set; }
+        public CustomerMessage After { get; set; }
     }
 
     public class KeyIndentification
