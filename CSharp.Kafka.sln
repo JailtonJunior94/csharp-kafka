@@ -5,13 +5,13 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01. Distributed Services", "01. Distributed Services", "{0C955CA8-022F-4123-8DBD-E0A980D9F285}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharp.Kafka.Consumer", "src\CSharp.Kafka.Consumer\CSharp.Kafka.Consumer.csproj", "{2F511F9E-6F48-494D-8EE2-A5BCBE346766}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharp.Kafka.Consumer", "src\CSharp.Kafka.Consumer\CSharp.Kafka.Consumer.csproj", "{2F511F9E-6F48-494D-8EE2-A5BCBE346766}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharp.Kafka.Api", "src\CSharp.Kafka.Api\CSharp.Kafka.Api.csproj", "{AC49E9EC-F2E0-4D4A-9168-50A4CD14B554}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharp.Kafka.Api", "src\CSharp.Kafka.Api\CSharp.Kafka.Api.csproj", "{AC49E9EC-F2E0-4D4A-9168-50A4CD14B554}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02. Business", "02. Business", "{96B6260B-01E6-4FF8-9F28-E02D8D6422DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharp.Kafka.Business", "src\CSharp.Kafka.Business\CSharp.Kafka.Business.csproj", "{18430B4E-5B2E-4E5E-A72B-C75E4C2CBD15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharp.Kafka.Business", "src\CSharp.Kafka.Business\CSharp.Kafka.Business.csproj", "{18430B4E-5B2E-4E5E-A72B-C75E4C2CBD15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

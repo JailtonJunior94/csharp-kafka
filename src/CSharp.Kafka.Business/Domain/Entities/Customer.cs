@@ -1,4 +1,5 @@
 ﻿using System;
+using CSharp.Kafka.Business.Shared.Extensions;
 
 namespace CSharp.Kafka.Business.Domain.Entities
 {
@@ -8,7 +9,7 @@ namespace CSharp.Kafka.Business.Domain.Entities
         {
             Name = name;
             Email = email;
-            CreatedAt = DateTime.Now;
+            CreatedAt = DateTime.Now.UtcBrazil();
             Active = true;
         }
 
@@ -19,12 +20,17 @@ namespace CSharp.Kafka.Business.Domain.Entities
         public DateTime? UpdatedAt { get; private set; }
         public bool Active { get; private set; }
 
-        public Customer Update(string name, string email, bool active)
+        public Customer SetId(long id)
+        {
+            Id = id;
+            return this;
+        }
+
+        public Customer Update(string name, string email)
         {
             Name = name;
             Email = email;
-            UpdatedAt = DateTime.Now;
-            Active = active;
+            UpdatedAt = DateTime.Now.UtcBrazil();
 
             return this;
         }
