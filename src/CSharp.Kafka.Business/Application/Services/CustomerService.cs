@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using CSharp.Kafka.Business.Domain.Dtos;
 using CSharp.Kafka.Business.Domain.Entities;
 using CSharp.Kafka.Business.Infra.Repositories;
+using CSharp.Kafka.Business.Application.Mappings;
 using CSharp.Kafka.Business.Application.Interfaces;
 
 namespace CSharp.Kafka.Business.Application.Services
@@ -28,7 +29,7 @@ namespace CSharp.Kafka.Business.Application.Services
                 var newCustomer = new Customer(request.Name, request.Email);
 
                 var customer = await _repository.AddAsync(newCustomer);
-                if (customer != null) return new ObjectResult(customer) { StatusCode = StatusCodes.Status201Created };
+                if (customer != null) return new ObjectResult(customer.ToResponse()) { StatusCode = StatusCodes.Status201Created };
 
                 return new ObjectResult(new { Errors = "Não foi possível cadastrar cliente!" }) { StatusCode = StatusCodes.Status400BadRequest };
             }
@@ -65,7 +66,7 @@ namespace CSharp.Kafka.Business.Application.Services
                 var customer = await _repository.GetByIdAsync(id);
                 if (customer == null) return new ObjectResult(new { Errors = "Cliente não encontrado!" }) { StatusCode = StatusCodes.Status404NotFound };
 
-                return new ObjectResult(customer) { StatusCode = StatusCodes.Status200OK };
+                return new ObjectResult(customer.ToResponse()) { StatusCode = StatusCodes.Status200OK };
             }
             catch (Exception exception)
             {
@@ -79,7 +80,7 @@ namespace CSharp.Kafka.Business.Application.Services
             try
             {
                 var customers = await _repository.GetAsync();
-                return new ObjectResult(customers) { StatusCode = StatusCodes.Status200OK };
+                return new ObjectResult(customers.ToListResponse()) { StatusCode = StatusCodes.Status200OK };
             }
             catch (Exception exception)
             {
@@ -96,7 +97,7 @@ namespace CSharp.Kafka.Business.Application.Services
                 if (customer == null) return new ObjectResult(new { Errors = "Cliente não encontrado!" }) { StatusCode = StatusCodes.Status404NotFound };
 
                 var changed = await _repository.UpdateAsync(customer.Update(request.Name, request.Email));
-                if (changed != null) return new ObjectResult(changed) { StatusCode = StatusCodes.Status200OK };
+                if (changed != null) return new ObjectResult(changed.ToResponse()) { StatusCode = StatusCodes.Status200OK };
 
                 return new ObjectResult(new { Errors = "Não foi possível alterar o cliente!" }) { StatusCode = StatusCodes.Status400BadRequest };
             }

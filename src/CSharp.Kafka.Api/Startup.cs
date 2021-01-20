@@ -2,7 +2,6 @@
 using System.IO;
 using CSharp.Kafka.Api;
 using System.Reflection;
-using System.Globalization;
 using CSharp.Kafka.Api.Configurations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,10 +14,7 @@ namespace CSharp.Kafka.Api
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            CultureInfo.CurrentCulture = new CultureInfo("pt-BR");
-
-            var fileInfo = new FileInfo(Assembly.GetExecutingAssembly().Location);
-            string path = fileInfo.Directory.Parent.FullName;
+            string path = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.Parent.FullName;
 
             var configuration = new ConfigurationBuilder()
                  .SetBasePath(Environment.CurrentDirectory)
@@ -28,6 +24,7 @@ namespace CSharp.Kafka.Api
                  .Build();
 
             builder.Services.AddSingleton(x => configuration);
+            builder.Services.RegisterApplicationInsights(configuration);
             builder.Services.RegisterDependencies();
         }
     }

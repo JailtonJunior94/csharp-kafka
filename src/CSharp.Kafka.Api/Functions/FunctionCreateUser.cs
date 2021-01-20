@@ -7,21 +7,21 @@ using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using CSharp.Kafka.Business.Domain.Dtos;
 using NSwag.Annotations.AzureFunctionsV2;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using CSharp.Kafka.Business.Application.Interfaces;
 using CSharp.Kafka.Business.Application.Validations;
+using CSharp.Kafka.Business.Shared.ApplicationInsights;
 
 namespace CSharp.Kafka.Api.Functions
 {
     public class FunctionCreateUser
     {
+        private readonly ILogWithMetric _logger;
         private readonly ICustomerService _service;
-        private readonly ILogger<FunctionCreateUser> _logger;
 
-        public FunctionCreateUser(ICustomerService service, ILogger<FunctionCreateUser> logger)
+        public FunctionCreateUser(ILogWithMetric logger, ICustomerService service)
         {
             _logger = logger;
             _service = service;
@@ -44,7 +44,7 @@ namespace CSharp.Kafka.Api.Functions
             }
             catch (Exception exception)
             {
-                _logger.LogError($"{exception?.InnerException?.Message ?? exception?.Message}");
+                _logger.LogError(exception);
                 return new ObjectResult(new { Errors = "Ocorreu um erro inesperado!" }) { StatusCode = StatusCodes.Status500InternalServerError };
             }
         }

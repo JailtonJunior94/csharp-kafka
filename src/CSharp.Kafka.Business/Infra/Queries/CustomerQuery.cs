@@ -25,7 +25,7 @@
         public const string Add = @"INSERT INTO
                                       dbo.Customers
                                     VALUES
-                                      (@name, @email, @createdAt, @updatedAt, @active)";
+                                      (@name, @email, @createdAt, @updatedAt, @active); SELECT SCOPE_IDENTITY()";
         public const string Update = @"UPDATE
                                           dbo.Customers
                                         SET

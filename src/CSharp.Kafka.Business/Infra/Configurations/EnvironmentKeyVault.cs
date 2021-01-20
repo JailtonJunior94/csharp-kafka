@@ -17,6 +17,15 @@ namespace CSharp.Kafka.Business.Infra.Configurations
             return tc.ConvertFrom(value);
         }
 
+        public static string InstrumentationKey
+        {
+            get
+            {
+                var value = string.IsNullOrEmpty(GetValue<string>("InstrumentationKey")) ? GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY") : GetValue<string>("InstrumentationKey");
+                return value;
+            }
+        }
         public static string ConnectionString { get { return GetValue<string>("ConnectionString"); } }
+        public static string CloudRoleName { get { return GetValue<string>("CloudRoleName"); } }
     }
 }
