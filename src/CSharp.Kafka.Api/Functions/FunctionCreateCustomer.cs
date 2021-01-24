@@ -16,12 +16,12 @@ using CSharp.Kafka.Business.Shared.ApplicationInsights;
 
 namespace CSharp.Kafka.Api.Functions
 {
-    public class FunctionCreateUser
+    public class FunctionCreateCustomer
     {
         private readonly ILogWithMetric _logger;
         private readonly ICustomerService _service;
 
-        public FunctionCreateUser(ILogWithMetric logger, ICustomerService service)
+        public FunctionCreateCustomer(ILogWithMetric logger, ICustomerService service)
         {
             _logger = logger;
             _service = service;
@@ -29,7 +29,7 @@ namespace CSharp.Kafka.Api.Functions
 
         [SwaggerRequestBodyType(typeof(CustomerRequest))]
         [SwaggerResponse(200, typeof(CustomerResponse))]
-        [FunctionName("FunctionCreateUser")]
+        [FunctionName("FunctionCreateCustomer")]
         public async Task<IActionResult> RunAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "v1/customers")] HttpRequest req)
         {
             try
@@ -40,7 +40,7 @@ namespace CSharp.Kafka.Api.Functions
                 var validation = new CustomerValidations().Validate(request);
                 if (!validation.IsValid) return new BadRequestObjectResult(new { Errors = validation.Errors.Select(j => j.ErrorMessage) });
 
-                return await _service.CreateUserAsync(request);
+                return await _service.CreateCustomerAsync(request);
             }
             catch (Exception exception)
             {

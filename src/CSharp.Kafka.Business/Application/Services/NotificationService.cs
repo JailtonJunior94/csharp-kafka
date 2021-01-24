@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Confluent.Kafka;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using CSharp.Kafka.Business.Domain.Messages;
@@ -15,8 +16,12 @@ namespace CSharp.Kafka.Business.Application.Services
             _logger = logger;
         }
 
-        public async Task SendNotificationAsync(KafkaMessage message)
+        public async Task SendNotificationAsync(ConsumeResult<string, string> consume)
         {
+            KafkaMessage message = null;
+            if (consume.Message.Value != null)
+                message = JsonConvert.DeserializeObject<KafkaMessage>(consume?.Message?.Value);
+
             if (message == null)
             {
                 _logger.LogInformation($"[DELETADO] - ");

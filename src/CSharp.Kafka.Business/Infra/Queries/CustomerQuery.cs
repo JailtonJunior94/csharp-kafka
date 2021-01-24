@@ -30,7 +30,7 @@
                                           dbo.Customers
                                         SET
                                           name = @name,
-                                          email @email
+                                          email = @email
                                         WHERE
                                           Id = @id";
         public const string Delete = @"DELETE FROM

@@ -7,6 +7,6 @@
     "WEBSITE_TIME_ZONE": "E. South America Standard Time",
     "InstrumentationKey": "193310F4-DF58-4433-B5F0-3DA4E3A9BFD4",
     "CloudRoleName": "CSharp.Kafka",
-    "ConnectionString": "Server=localhost,1433;Database=CsharpKafka;User Id=SA; Password=@stefany@1994"
+    "ConnectionString": "Server=localhost,1433;Database=KafkaPoC;User Id=SA; Password=@stefany@1994"
   }
 }

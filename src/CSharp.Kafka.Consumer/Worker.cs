@@ -1,11 +1,10 @@
 using System;
 using Confluent.Kafka;
-using Newtonsoft.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using CSharp.Kafka.Business.Domain.Messages;
+using Microsoft.Extensions.Configuration;
 using CSharp.Kafka.Business.Application.Interfaces;
 
 namespace CSharp.Kafka.Consumer
@@ -14,24 +13,26 @@ namespace CSharp.Kafka.Consumer
     {
         private readonly ILogger<Worker> _logger;
         private readonly INotificationService _service;
+        private readonly IConfiguration _configuration;
         private readonly IConsumer<string, string> _consumer;
         private readonly CancellationTokenSource _cancellationTokenSource;
 
-        public Worker(ILogger<Worker> logger, INotificationService service)
+        public Worker(ILogger<Worker> logger, INotificationService service, IConfiguration configuration)
         {
             _logger = logger;
             _service = service;
+            _configuration = configuration;
             _cancellationTokenSource = new CancellationTokenSource();
 
             var config = new ConsumerConfig
             {
-                GroupId = $"dbserver.dbo.Customers.group.id",
-                BootstrapServers = "192.168.0.109:9092",
+                GroupId = _configuration.GetValue<string>("GroupId"),
+                BootstrapServers = _configuration.GetValue<string>("BootstrapServer"),
                 AutoOffsetReset = AutoOffsetReset.Earliest
             };
 
             _consumer = new ConsumerBuilder<string, string>(config).Build();
-            _consumer.Subscribe("dbserver.dbo.Customers");
+            _consumer.Subscribe(_configuration.GetValue<string>("TopicName"));
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -47,23 +48,18 @@ namespace CSharp.Kafka.Consumer
                 try
                 {
                     var consume = _consumer.Consume(_cancellationTokenSource.Token);
-                    _logger.LogInformation($"Consumed message '{consume.Message?.Value}' at: '{consume.TopicPartitionOffset}'.");
 
-                    KafkaMessage message = null;
-                    if (consume.Message.Value != null)
-                        message = JsonConvert.DeserializeObject<KafkaMessage>(consume?.Message?.Value);
+                    await _service.SendNotificationAsync(consume);
 
-                    await _service.SendNotificationAsync(message);
                     _consumer.Commit();
                 }
                 catch (ConsumeException exception)
                 {
-                    _logger.LogError($"Error occured: {exception.Error.Reason}");
+                    _logger.LogError($"{exception.Error.Reason}");
                 }
                 catch (OperationCanceledException exception)
                 {
                     _logger.LogError($"{exception?.InnerException?.Message ?? exception?.Message}");
-                    _consumer.Close();
                 }
                 catch (Exception exception)
                 {

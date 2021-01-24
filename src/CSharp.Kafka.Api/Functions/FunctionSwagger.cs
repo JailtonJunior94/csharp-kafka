@@ -17,7 +17,7 @@ namespace Cliente.Cancelamento.Batch.Functions
 {
     public class FunctionSwagger
     {
-        private const string TITLE = "C#, Kafka, CDC, Worker, Functions, Sql Server";
+        private const string TITLE = "C#, Kafka, CDC, Worker, Functions, Sql Server e Slack";
 
         [OpenApiIgnore]
         [FunctionName("Swagger")]
@@ -28,11 +28,19 @@ namespace Cliente.Cancelamento.Batch.Functions
             var document = await generator.GenerateForAzureFunctionClassesAsync(
             new List<Type>
             {
-                typeof(FunctionCreateUser),
+                typeof(FunctionCustomers),
+                typeof(FunctionCustomerById),
+                typeof(FunctionCreateCustomer),
+                typeof(FunctionUpdateCustomer),
+                typeof(FunctionDeleteCustomer),
             },
             new List<string>
             {
-                "FunctionCreateUser",
+                "FunctionCustomers",
+                "FunctionCustomerById",
+                "FunctionCreateCustomer",
+                "FunctionUpdateCustomer",
+                "FunctionDeleteCustomer",
             });
 
             var json = document.ToJson();

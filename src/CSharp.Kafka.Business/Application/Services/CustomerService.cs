@@ -22,7 +22,7 @@ namespace CSharp.Kafka.Business.Application.Services
             _repository = repository;
         }
 
-        public async Task<ObjectResult> CreateUserAsync(CustomerRequest request)
+        public async Task<ObjectResult> CreateCustomerAsync(CustomerRequest request)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace CSharp.Kafka.Business.Application.Services
             }
         }
 
-        public async Task<ObjectResult> DeleteUserAsync(long id)
+        public async Task<ObjectResult> DeleteCustomerAsync(long id)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace CSharp.Kafka.Business.Application.Services
             }
         }
 
-        public async Task<ObjectResult> GetUserById(long id)
+        public async Task<ObjectResult> GetCustomerById(long id)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace CSharp.Kafka.Business.Application.Services
             }
         }
 
-        public async Task<ObjectResult> GetUsers()
+        public async Task<ObjectResult> GetCustomers()
         {
             try
             {
@@ -89,7 +89,7 @@ namespace CSharp.Kafka.Business.Application.Services
             }
         }
 
-        public async Task<ObjectResult> UpdateUserAsync(long id, CustomerRequest request)
+        public async Task<ObjectResult> UpdateCustomerAsync(long id, CustomerRequest request)
         {
             try
             {

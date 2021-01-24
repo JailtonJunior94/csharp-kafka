@@ -6,10 +6,10 @@ namespace CSharp.Kafka.Business.Application.Interfaces
 {
     public interface ICustomerService
     {
-        Task<ObjectResult> GetUsers();
-        Task<ObjectResult> GetUserById(long id);
-        Task<ObjectResult> CreateUserAsync(CustomerRequest request);
-        Task<ObjectResult> UpdateUserAsync(long id, CustomerRequest request);
-        Task<ObjectResult> DeleteUserAsync(long id);
+        Task<ObjectResult> GetCustomers();
+        Task<ObjectResult> GetCustomerById(long id);
+        Task<ObjectResult> CreateCustomerAsync(CustomerRequest request);
+        Task<ObjectResult> UpdateCustomerAsync(long id, CustomerRequest request);
+        Task<ObjectResult> DeleteCustomerAsync(long id);
     }
 }
