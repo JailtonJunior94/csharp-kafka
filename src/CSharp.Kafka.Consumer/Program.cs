@@ -17,6 +17,7 @@ namespace CSharp.Kafka.Consumer
                 .ConfigureServices(services =>
                 {
                     services.AddTransient<INotificationService, NotificationService>();
+                    services.AddHttpClient<ISlackService, SlackService>();
                 })
                 .ConfigureServices((hostContext, services) =>
                 {

@@ -1,4 +1,4 @@
-CREATE DATABASE CsharpKafka
+CREATE DATABASE KafkaPoC
 
 CREATE TABLE dbo.Customers
 (
@@ -24,8 +24,6 @@ EXEC sys.sp_cdc_help_change_data_capture
 GO
 
 INSERT INTO dbo.Customers
-VALUES
-    ('Antony', 'antony.teixeira@outlook.com', GETDATE(), NULL, 1)
+VALUES ('Antony', 'antony.teixeira@outlook.com', GETDATE(), NULL, 1)
 
-SELECT *
-FROM dbo.Customers (NOLOCK)
+SELECT * FROM dbo.Customers (NOLOCK)
