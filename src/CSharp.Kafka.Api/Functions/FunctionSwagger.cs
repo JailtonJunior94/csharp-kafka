@@ -17,7 +17,7 @@ namespace Cliente.Cancelamento.Batch.Functions
 {
     public class FunctionSwagger
     {
-        private const string TITLE = "C#, Kafka, CDC, Worker, Functions, Sql Server e Slack";
+        private const string TITLE = "C#, Kafka, CDC, Worker, Azure Functions, Sql Server e Slack";
 
         [OpenApiIgnore]
         [FunctionName("Swagger")]

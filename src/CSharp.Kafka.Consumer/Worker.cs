@@ -26,13 +26,13 @@ namespace CSharp.Kafka.Consumer
 
             var config = new ConsumerConfig
             {
-                GroupId = _configuration.GetValue<string>("GroupId"),
-                BootstrapServers = _configuration.GetValue<string>("BootstrapServer"),
+                GroupId = _configuration["GroupId"],
+                BootstrapServers = _configuration["BootstrapServer"],
                 AutoOffsetReset = AutoOffsetReset.Earliest
             };
 
             _consumer = new ConsumerBuilder<string, string>(config).Build();
-            _consumer.Subscribe(_configuration.GetValue<string>("TopicName"));
+            _consumer.Subscribe(_configuration["TopicName"]);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
