@@ -71,7 +71,7 @@ Resultado:
 ```
 Para configurar o nosso conector entre o SQL Server e o Kafka precisamos fazer uma requisição do tipo POST na seguinte URL.
 ```
-http://192.168.0.108:8083/connectors
+http://seuip:8083/connectors
 
 {
 	"name": "sqlserver-customers-connector",
