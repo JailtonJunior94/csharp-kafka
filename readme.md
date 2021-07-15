@@ -39,7 +39,7 @@ CREATE TABLE dbo.Customers
 ```
 Para que o Kafka, Zookeeper e Debezium funcione do jeito que precisamos é preciso habilitar o CDC (Change Data Capture) com os seguintes comandos.
 ```
-EXEC sys.sp_cdc_enable_db GO
+EXEC sys.sp_cdc_enable_db
 ```
 Após habilitar o CDC no nosso banco de dados SQL Server, vamos habilitar para que a tabela Customer escute todos os eventos do banco.
 ```
@@ -48,7 +48,6 @@ EXEC sys.sp_cdc_enable_table
 @source_name   = N'Customers',
 @role_name     = N'Admin',
 @supports_net_changes = 1
-GO
 ```
 Feito isso vamos iniciar a nossa infra com o arquivo docker-compose.yml que está no projeto
 ```
@@ -76,9 +75,9 @@ http://seuip:8083/connectors
 {
 	"name": "sqlserver-customers-connector",
 	"config": {
-        "name":"sqlserver-customers-connector",
+    "name":"sqlserver-customers-connector",
 		"connector.class": "io.debezium.connector.sqlserver.SqlServerConnector",
-        "table.whitelist": "dbo.Customers",
+    "table.whitelist": "dbo.Customers",
 		"database.hostname": "{seuip}",
 		"database.port": "1433",
 		"database.user": "sa",

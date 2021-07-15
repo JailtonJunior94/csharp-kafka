@@ -7,6 +7,6 @@
     "WEBSITE_TIME_ZONE": "E. South America Standard Time",
     "InstrumentationKey": "193310F4-DF58-4433-B5F0-3DA4E3A9BFD4",
     "CloudRoleName": "CSharp.Kafka",
-    "ConnectionString": ""
+    "ConnectionString": "Data Source=localhost,1433;Initial Catalog=KafkaPoC;User Id=sa;Password=@docker@2021;"
   }
 }

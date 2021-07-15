@@ -1,28 +1,52 @@
-version: "3.4"
+version: "3"
 
 services:
+  mssql:
+    container_name: mssql-db
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    restart: always
+    volumes:
+      - ./.docker/data:/var/opt/mssql/data
+    environment:
+      ACCEPT_EULA: 'Y'
+      SA_PASSWORD: '@docker@2021'
+      MSSQL_AGENT_ENABLED: 'True'
+    ports:
+      - "1433:1433"
+    extra_hosts: 
+      - "host.docker.internal:192.168.0.148"
+
   zookeeper:
-    image: confluentinc/cp-zookeeper
+    container_name: zookeeper
+    image: confluentinc/cp-zookeeper:latest
     ports:
       - "2181:2181"
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    extra_hosts: 
+      - "host.docker.internal:192.168.0.148"
 
   kafka:
-    image: confluentinc/cp-kafka
+    container_name: kafka
+    image: confluentinc/cp-kafka:latest
     depends_on:
       - zookeeper
     ports:
       - "9092:9092"
+      - "9094:9094"
     environment:
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://seuip:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_LOG_CLEANER_DELETE_RETENTION_MS: 5000
       KAFKA_BROKER_ID: 1
-      KAFKA_MIN_INSYNC_REPLICAS: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_LISTENERS: INTERNAL://:9092,OUTSIDE://:9094
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,OUTSIDE://host.docker.internal:9094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,OUTSIDE:PLAINTEXT
+    extra_hosts: 
+      - "host.docker.internal:192.168.0.148"
 
   connector:
+    container_name: connector-debezium
     image: debezium/connect:1.2
     ports:
       - "8083:8083"
@@ -31,7 +55,25 @@ services:
       CONFIG_STORAGE_TOPIC: my_connect_configs
       OFFSET_STORAGE_TOPIC: my_connect_offsets
       STATUS_STORAGE_TOPIC: my_connect_statuses
-      BOOTSTRAP_SERVERS: seuip:9092
+      BOOTSTRAP_SERVERS: kafka:9092
     depends_on:
       - zookeeper
       - kafka
+    extra_hosts:
+      - "host.docker.internal:192.168.0.148"
+
+  control-center:
+    container_name: control-center
+    image: confluentinc/cp-enterprise-control-center:6.0.1
+    hostname: control-center
+    depends_on:
+      - kafka
+    ports:
+      - "9021:9021"
+    environment:
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: kafka:9092
+      CONTROL_CENTER_REPLICATION_FACTOR: 1
+      CONTROL_CENTER_CONNECT_CLUSTER: http://kafka-connect:8083
+      PORT: 9021
+    extra_hosts:
+      - "host.docker.internal:192.168.0.148"
